@@ -4,10 +4,13 @@ from flask_login import LoginManager
 from flask_bcrypt import Bcrypt
 from flask_mail import Mail
 import os
+from dotenv import load_dotenv
+load_dotenv()
+
 
 # ----------------- Flask App Config ----------------- #
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'supersecretkey'
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///trustvote.db'
 app.config['UPLOAD_FOLDER'] = os.path.join('static', 'faces')
 app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024  # 16MB max upload
@@ -16,9 +19,10 @@ app.config['MAX_CONTENT_LENGTH'] = 10 * 1024 * 1024  # 16MB max upload
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'nirajbista09@gmail.com'
-app.config['MAIL_PASSWORD'] = 'xgaj cuvm snhs parz'  # App-specific password
-app.config['MAIL_DEFAULT_SENDER'] = 'nirajbista09@gmail.com'
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_DEFAULT_SENDER')
+
 
 # ----------------- Extensions ----------------- #
 db = SQLAlchemy(app)

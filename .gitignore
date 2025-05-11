@@ -1,0 +1,27 @@
+# 💻 Python cache
+__pycache__/
+*.pyc
+
+# 🔐 Secrets and environment files
+.env
+*.env
+
+# 🧪 Virtual environment folders
+venv/
+env/
+
+# 🖼️ OS/System files
+.DS_Store
+Thumbs.db
+
+# 🧰 Editor/IDE settings
+.vscode/
+.idea/
+
+# 🗃️ Compiled extensions
+*.so
+*.dll
+*.pyd
+
+# 🧠 Jupyter
+.ipynb_checkpoints/

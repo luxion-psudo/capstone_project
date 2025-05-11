@@ -7,3 +7,4 @@ face_recognition
 opencv-python
 numpy
 pillow
+python-dotenv
