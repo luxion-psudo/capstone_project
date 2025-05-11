@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TrustVote - Login</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body, h1, h2, h3, h4, h5, p, a, button, input, label {
+      font-family: 'Poppins', sans-serif;
+    }
+    body {
+      background: linear-gradient(45deg, #FFEECC, #FFE4B5);
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #333;
+      padding: 10px 20px;
+      color: #fff;
+    }
+    .navbar a {
+      text-decoration: none;
+      color: #fff;
+    }
+    .navbar .brand-logo {
+      max-height: 50px;
+      margin-right: 10px;
+    }
+    .container {
+      margin-top: 40px;
+    }
+    .login-section {
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+    }
+    .btn-login {
+      background-color: #FF7A00;
+      color: white;
+      border: none;
+    }
+    .btn-login:hover {
+      background-color: #E56E00;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar">
+  <a class="navbar-brand d-flex align-items-center" href="{{ url_for('homepage') }}">
+    <img src="{{ url_for('static', filename='brand.png') }}" alt="TrustVote Logo" class="brand-logo">
+    <span class="ms-2">TrustVote</span>
+  </a>
+  <div>
+    <a href="{{ url_for('register') }}">Register</a>
+  </div>
+</nav>
+
+<!-- Login Section -->
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="login-section">
+        <h4 class="text-center mb-4">Welcome Back to TrustVote</h4>
+        <form action="{{ url_for('login') }}" method="POST" id="login-form">
+          <div class="mb-3">
+            <label for="email" class="form-label">Email Address</label>
+            <input type="email" id="email" name="email" class="form-control" placeholder="Enter your registered email" required>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
+          </div>
+          <div class="text-center mt-3">
+            <button type="submit" class="btn btn-login">Login</button>
+          </div>
+        </form>
+        <div class="text-center mt-3">
+          <p>Don't have an account? <a href="{{ url_for('register') }}" class="text-warning">Register</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+  document.getElementById('login-form').addEventListener('submit', function(e) {
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value.trim();
+    if (email === "" || password === "") {
+      e.preventDefault();
+      alert("Please fill in both fields to login.");
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Admin Panel - TrustVote</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #e0f7fa;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #007BFF;
+      padding: 10px 20px;
+      color: #fff;
+    }
+
+    .navbar-left, .navbar-center, .navbar-right {
+      display: flex;
+      align-items: center;
+    }
+
+    .navbar-left .brand-logo {
+      width: 40px;
+      margin-right: 10px;
+    }
+
+    .brand-text {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .navbar-center ul {
+      list-style: none;
+      display: flex;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar-center li {
+      margin: 0 15px;
+    }
+
+    .navbar-center a {
+      text-decoration: none;
+      color: white;
+      font-size: 18px;
+    }
+
+    .navbar-right img {
+      width: 30px;
+      margin-left: 15px;
+      cursor: pointer;
+    }
+
+    .admin-container {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+    }
+
+    .stats-box, .admin-options-box {
+      background: white;
+      border: 2px solid #333;
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+
+    .stats-box h2, .admin-options-box h2 {
+      font-size: 28px;
+      text-align: center;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    .stats-item {
+      font-size: 20px;
+      color: #333;
+      margin: 10px 0;
+    }
+
+    .admin-option {
+      display: flex;
+      align-items: center;
+      padding: 10px 15px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      text-decoration: none;
+      color: #333;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .admin-option:hover {
+      background-color: #f0f0f0;
+      transform: scale(1.02);
+    }
+
+    .admin-option img {
+      width: 40px;
+      height: 40px;
+      margin-right: 15px;
+    }
+
+    .admin-option span {
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar">
+  <div class="navbar-left">
+    <img src="{{ url_for('static', filename='brand.png') }}" alt="TrustVote Logo" class="brand-logo">
+    <span class="brand-text">TrustVote</span>
+  </div>
+  <div class="navbar-center">
+    <ul>
+      <li><a href="{{ url_for('homepage') }}">Home</a></li>
+      <li><a href="{{ url_for('polls') }}">Polls</a></li>
+      <li><a href="{{ url_for('about') }}">About Us</a></li>
+      <li><a href="{{ url_for('admin') }}">Admin</a></li>
+    </ul>
+  </div>
+  <div class="navbar-right">
+    <a href="{{ url_for('settings') }}"><img src="{{ url_for('static', filename='settings.png') }}" alt="Settings"></a>
+    <a href="{{ url_for('logout') }}"><img src="{{ url_for('static', filename='logout.png') }}" alt="Logout"></a>
+  </div>
+</nav>
+
+<!-- Admin Panel Content -->
+<div class="admin-container">
+  <!-- Stats Box -->
+  <div class="stats-box">
+    <h2>Statistics</h2>
+    <div class="stats-item">Total Registered Users: {{ stats.users }}</div>
+    <div class="stats-item">Total Anonymous Voters: {{ stats.anon_users }}</div>
+    <div class="stats-item">Total Polls: {{ stats.polls }}</div>
+    <div class="stats-item">Total Votes: {{ stats.votes }}</div>
+  </div>
+
+  <!-- Admin Options -->
+  <div class="admin-options-box">
+    <h2>Admin Options</h2>
+    <a class="admin-option" href="{{ url_for('add_polls') }}">
+      <img src="{{ url_for('static', filename='newpoll.png') }}" alt="Add Poll">
+      <span>Add New Poll</span>
+    </a>
+    <a class="admin-option" href="{{ url_for('manage_voters') }}">
+      <img src="{{ url_for('static', filename='managevoters.png') }}" alt="Manage Voters">
+      <span>Manage Voters</span>
+    </a>
+    <a class="admin-option" href="{{ url_for('manage_votes') }}">
+      <img src="{{ url_for('static', filename='managevotes.png') }}" alt="Manage Votes">
+      <span>Manage Votes</span>
+    </a>
+  </div>
+</div>
+
+</body>
+</html>

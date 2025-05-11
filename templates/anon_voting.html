@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Anonymous Voting - TrustVote</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f5f5f5;
+    }
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 30px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+    video {
+      width: 100%;
+      max-width: 300px;
+      display: block;
+      margin: auto;
+      border-radius: 8px;
+    }
+    canvas {
+      display: none;
+    }
+    .btn-primary, .btn-success {
+      width: 100%;
+      margin-top: 10px;
+    }
+    .form-text {
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Anonymous Voting</h2>
+  <form method="POST" action="{{ url_for('anon_vote', poll_id=poll.id) }}">
+    <div class="mb-3">
+      <label for="email" class="form-label">College Email</label>
+      <div class="input-group">
+        <input type="email" class="form-control" id="email" name="email" required>
+        <button type="button" class="btn btn-outline-secondary" id="sendOtpBtn">Send OTP</button>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <label for="otp" class="form-label">Enter OTP</label>
+      <input type="text" class="form-control" id="otp" name="otp" required>
+      <div id="otpStatus" class="form-text text-muted"></div>
+    </div>
+
+    <h5>{{ poll.question }}</h5>
+    {% for option in poll.options %}
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="selected_option" id="option{{ loop.index }}" value="{{ option }}" required>
+      <label class="form-check-label" for="option{{ loop.index }}">{{ option }}</label>
+    </div>
+    {% endfor %}
+
+    <input type="hidden" id="photoData" name="photoData">
+
+    <div class="mt-4 text-center">
+      <video id="video" autoplay></video>
+      <button type="button" id="capture-button" class="btn btn-primary mt-2">Capture Face</button>
+      <canvas id="canvas"></canvas>
+    </div>
+
+    <button type="submit" class="btn btn-success mt-3">Submit Vote</button>
+  </form>
+</div>
+
+<script>
+  let otpVerified = false;
+
+  document.getElementById('sendOtpBtn').addEventListener('click', () => {
+    const email = document.getElementById('email').value;
+    fetch('{{ url_for("send_otp") }}', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: email })
+    })
+    .then(res => res.json())
+    .then(data => alert(data.status));
+  });
+
+  document.getElementById('otp').addEventListener('input', function () {
+    const otp = this.value;
+    fetch('{{ url_for("verify_otp") }}', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ otp: otp })
+    })
+    .then(res => res.json())
+    .then(data => {
+      document.getElementById('otpStatus').innerText = data.status;
+      otpVerified = data.verified;
+    });
+  });
+
+  const video = document.getElementById('video');
+  const canvas = document.getElementById('canvas');
+  const captureBtn = document.getElementById('capture-button');
+  const photoInput = document.getElementById('photoData');
+
+  if (navigator.mediaDevices.getUserMedia) {
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(stream => { video.srcObject = stream; })
+      .catch(err => { console.error("Camera error:", err); });
+  }
+
+  captureBtn.addEventListener('click', () => {
+    const scaleWidth = 300, scaleHeight = 200;
+    canvas.width = scaleWidth;
+    canvas.height = scaleHeight;
+    canvas.getContext('2d').drawImage(video, 0, 0, scaleWidth, scaleHeight);
+    const base64data = canvas.toDataURL('image/jpeg', 0.6);  // Compressed JPEG
+    photoInput.value = base64data;
+    console.log("Captured image size:", Math.round(base64data.length / 1024), "KB");
+    captureBtn.innerText = "✅ Captured";
+    captureBtn.disabled = true;
+  });
+
+  document.querySelector("form").addEventListener("submit", function (e) {
+    if (!otpVerified) {
+      alert("Please verify OTP before submitting.");
+      e.preventDefault();
+    }
+    if (!photoInput.value) {
+      alert("Please capture your face before submitting.");
+      e.preventDefault();
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TrustVote - Home</title>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #333;
+      color: #fff;
+      padding: 10px 20px;
+    }
+
+    .navbar-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: auto;
+      margin-right: 10px;
+    }
+
+    .brand-text {
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .navbar-center .nav-links {
+      list-style: none;
+      display: flex;
+    }
+
+    .nav-links li {
+      margin: 0 15px;
+    }
+
+    .nav-links li a {
+      text-decoration: none;
+      color: #fff;
+      font-size: 18px;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links li a:hover {
+      color: #ccc;
+    }
+
+    .navbar-right a img {
+      width: 30px;
+      height: auto;
+      margin-left: 15px;
+      cursor: pointer;
+    }
+
+    .banner {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .banner-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(70%);
+    }
+
+    .banner-text {
+      position: absolute;
+      top: 50%;
+      left: 50px;
+      transform: translateY(-50%);
+      color: #fff;
+    }
+
+    .banner-text h1 {
+      font-size: 60px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .banner-text p {
+      font-size: 24px;
+      max-width: 500px;
+    }
+
+    @media (max-width: 768px) {
+      .banner-text h1 {
+        font-size: 40px;
+      }
+      .banner-text p {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navigation Bar -->
+<nav class="navbar">
+  <div class="navbar-left">
+    <img src="{{ url_for('static', filename='brand.png') }}" alt="TrustVote Logo" class="brand-logo">
+    <span class="brand-text">TrustVote</span>
+  </div>
+
+  <div class="navbar-center">
+    <ul class="nav-links">
+      <li><a href="{{ url_for('homepage') }}">Home</a></li>
+      <li><a href="{{ url_for('polls') }}">Polls</a></li>
+      <li><a href="{{ url_for('about') }}">About Us</a></li>
+    </ul>
+  </div>
+
+  <div class="navbar-right">
+    <a href="{{ url_for('settings') }}"><img src="{{ url_for('static', filename='settings.png') }}" alt="Settings"></a>
+    <a href="{{ url_for('logout') }}"><img src="{{ url_for('static', filename='logout.png') }}" alt="Logout"></a>
+  </div>
+</nav>
+
+<!-- Banner Section -->
+<section class="banner">
+  <img src="{{ url_for('static', filename='banner.jpg') }}" alt="Banner Image" class="banner-image">
+  <div class="banner-text">
+    <h1>Secure. Transparent. Fast.</h1>
+    <p>TrustVote ensures your votes are verified, protected, and counted accurately with OTP authentication and face verification.</p>
+  </div>
+</section>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
