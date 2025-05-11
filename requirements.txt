@@ -8,3 +8,4 @@ opencv-python
 numpy
 pillow
 python-dotenv
+gunicorn
