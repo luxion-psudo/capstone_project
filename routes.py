@@ -73,17 +73,26 @@ def register():
         password = bcrypt.generate_password_hash(request.form['password']).decode('utf-8')
         photo_data = request.form['photoData']
 
-        filename = f'{name.split()[0].lower()}.png'
-        filepath = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        with open(filepath, "wb") as f:
+        # Sanitize and generate filename
+        safe_name = re.sub(r'[^a-zA-Z0-9]', '_', name.split()[0].lower())
+        filename = f"{safe_name}.png"
+        relative_path = os.path.join("faces", filename).replace("\\", "/")  # Save as faces/amita.png
+        full_path = os.path.join(app.config['UPLOAD_FOLDER'], relative_path)
+
+        os.makedirs(os.path.dirname(full_path), exist_ok=True)  # Ensure 'faces/' folder exists
+
+        with open(full_path, "wb") as f:
             f.write(base64.b64decode(photo_data.split(',')[1]))
 
-        user = User(name=name, email=email, phone=phone, password=password, face_path=filename)
+        # Store relative path in database
+        user = User(name=name, email=email, phone=phone, password=password, face_path=relative_path)
         db.session.add(user)
         db.session.commit()
+
         flash("Registration successful.", "success")
         return redirect(url_for('login'))
     return render_template("registration.html")
+
 
 # ----------------- POLLS & VOTING -----------------
 @app.route('/polls')
